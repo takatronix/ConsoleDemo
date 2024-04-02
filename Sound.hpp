@@ -24,8 +24,6 @@ class Sound {
     size_t _size;
     int _bitrate;
 public:
-
-
     template<size_t N>
     Sound(const uint8_t (&data)[N], int bitrate = 44100) {
         _data = data;

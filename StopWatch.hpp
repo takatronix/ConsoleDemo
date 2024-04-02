@@ -1,10 +1,10 @@
-#ifndef _Timer_hpp_
-#define _Timer_hpp_
+#ifndef _StopWatch_hpp_
+#define _StopWatch_hpp_
 
-class Timer {
+class StopWatch {
     unsigned long _start;
 public:
-    Timer(void) {
+    StopWatch(void) {
         Reset();
     }
     void Reset() {
@@ -21,7 +21,7 @@ public:
     }
     // 秒を取得
     unsigned long Second() {
-        return Elapsed() / 1000;
+        return Elapsed() / 1000L;
     }
 };
 

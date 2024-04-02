@@ -1,7 +1,7 @@
 #include <M5Unified.h>
 
 #include "Device.hpp"
-#include "Timer.hpp"
+#include "StopWatch.hpp"
 #include "Sound.hpp"
 
 #include "Sprite.hpp"
@@ -18,7 +18,7 @@ M5Canvas console(&M5.Display);
 TextSprite batterySprite(&console,25,8);
 TextSprite statusSprite(&console,180,8);
 
-Timer startTimer;
+StopWatch startTimer;
 
 
 //M5Canvas canvas(&M5.Display);
@@ -42,9 +42,10 @@ void setup() {
   Sound::beep(2000);
   Sound::beep(1000);
 
-  
+  // 回転に対応するため、画面サイズの大きい方に合わせる
   int size = max(M5.Display.width(),M5.Display.height());
   console.setFont(&fonts::lgfxJapanGothic_16);
+ // M5Stackの場合8bitカラーにしないとメモリ不足になる
   console.setColorDepth(8);
   if(console.createSprite(size,size) == NULL){
     M5.Display.fillScreen(TFT_RED);
@@ -57,37 +58,40 @@ void setup() {
   console.setTextScroll(true);
   console.setTextColor(GREEN);
 
+  // デバイス情報表示
   printDeviceInformation();
 }
 
 void printDeviceInformation(){
+  console.setTextColor(TFT_YELLOW);
   console.printf("Board:%s\n",Device::getBoardName());
   console.printf("Screen:%dx%d\n",M5.Display.width(),M5.Display.height());
   console.printf("Battery:%d\n",Device::getBatteryLevel());
   console.printf("Orientation:%s\n",Device::getOrientationName());
-  console.printf("FreeMemory:%d\n", Device::getFreeDmaSize() );
-  console.printf("FreeBlock:%d\n", Device::getLargestFreeBlock() );
+  console.printf("FreeMemory:%d\n", Device::getFreeDmaSize());
+  console.printf("FreeBlock:%d\n", Device::getLargestFreeBlock());
+  console.setTextColor(TFT_GREEN);
 }
-
 
 void loop(void)
 {
-  Timer loopTimer;
+  StopWatch loopTimer;
   static int processTime = 0;
-  static unsigned count = 0;
+  static unsigned loopCount = 0;
+  int consoleY = 0;
   M5.update();
   
   // 前回の描画を消す
   batterySprite.popBackground();
   statusSprite.popBackground();
 
-
   if(Device::wasOrientationChanged()){
     int rotation = Device::getRotation();
     if(rotation != -1){
       console.printf("%s\n",Device::getOrientationName());
       M5.Display.setRotation(rotation);
-      console.moveToBottomLeft();
+      // 左下基準に表示
+      consoleY = M5.Display.height() - console.height();
     }
   }
 
@@ -103,21 +107,25 @@ void loop(void)
   batterySprite.push();
 
   // ステータス表示
-  int fps = startTimer.Second();
+  float fps = 0.0f;
+  int sec = startTimer.Second();
+  if(sec != 0){
+    fps = (float)loopCount / (float)sec;
+  }
   int mem = Device::getFreeDmaSize() / 1024;
   int freeBlock = Device::getLargestFreeBlock() / 1024;
   int psram = Device::getFreePsramSize() / 1024;
 
   char buf[256];
-  sprintf(buf,"%dFPS / %dKB / %dKB / %dms",count,mem,freeBlock,processTime);
+  sprintf(buf,"%.1fFPS / %dKB / %dKB / %dms",fps,mem,freeBlock,processTime);
   statusSprite.update(buf);
   statusSprite.moveToTopLeft();
   statusSprite.push();
 
   // オフスクリーン->LCDへ描画
-  console.pushSprite(0,0);
+  console.pushSprite(0,consoleY);
   processTime = loopTimer.Elapsed();
-  ++count;
+  ++loopCount;
 }
 
 void touch_handler(){
@@ -140,50 +148,44 @@ void button_handler(){
 
   // ButtonA
   if(M5.BtnA.wasPressed()){
-    console.print("A");
-    Sound::playNote(Note::C4,100);
+    console.printf("ButtonA Pressed\n");
+    Sound::playNote(Note::C4,50);
+    M5.Power.setLed(255);
   }
   if(M5.BtnA.wasReleased()){
-    console.print("a");
-    Sound::playNote(Note::C5,100);
+    Sound::playNote(Note::C5,50);
     M5.Power.setLed(0);
   }
   if(M5.BtnA.wasHold()){
-    console.print("(A)");
     Sound::playNote(Note::C6,300);
-    // debug
-    drawRandomPoint(console);
   }
 
   // ButtonB
   if(M5.BtnB.wasPressed()){
-    console.print("B\n");
-    Sound::playNote(Note::D4,100);
+    console.printf("ButtonB Pressed\n");
+    Sound::playNote(Note::D4,50);
     printDeviceInformation();
   }
   if(M5.BtnB.wasReleased()){
-    console.print("b\n");
-    Sound::playNote(Note::D5,100);
+    Sound::playNote(Note::D5,50);
   }
 
   // ButtonC
   if(M5.BtnC.wasPressed()){
-    M5.Lcd.print("C\n");
-    Sound::playNote(Note::E4,100);
+    console.printf("ButtonC Pressed\n");
+    Sound::playNote(Note::E4,50);
   }
   if(M5.BtnC.wasReleased()){
-    console.print("c\n");
-    Sound::playNote(Note::E5,100);
+    Sound::playNote(Note::E5,50);
   }
 
   // PWR Button (M5StickCのみ)
   if(M5.BtnPWR.wasPressed()){
-    M5.Lcd.print("P\n");
-    Sound::playNote(Note::F5,100);
+    console.printf("ButtonPWR Pressed\n");
+    Sound::playNote(Note::F5,50);
   }
   if(M5.BtnPWR.wasReleased()){
-    console.print("p\n");
-    Sound::playNote(Note::F4,100);
+    Sound::playNote(Note::F4,50);
   }
 
 }

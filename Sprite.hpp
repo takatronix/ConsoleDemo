@@ -63,7 +63,6 @@ public:
         canvas.fillSprite(color);
     }
 
-
     /// @brief          スプライトを作成する
     /// @param width    作成するスプライトの幅
     /// @param height   作成するスプライトの高さ
