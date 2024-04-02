@@ -60,30 +60,15 @@ void setup() {
   printDeviceInformation();
 }
 
-
-
-
 void printDeviceInformation(){
   console.printf("Board:%s\n",Device::getBoardName());
   console.printf("Screen:%dx%d\n",M5.Display.width(),M5.Display.height());
   console.printf("Battery:%d\n",Device::getBatteryLevel());
   console.printf("Orientation:%s\n",Device::getOrientationName());
-
   console.printf("FreeMemory:%d\n", Device::getFreeDmaSize() );
   console.printf("FreeBlock:%d\n", Device::getLargestFreeBlock() );
 }
 
-
-
-static constexpr char text0[] = "hello world";
-static constexpr char text1[] = "this";
-static constexpr char text2[] = "こんにちは";
-static constexpr char text3[] = "text";
-static constexpr char text4[] = "안녕하세요";
-static constexpr char text5[] = "vertical";
-static constexpr char text6[] = "scroll";
-static constexpr char text7[] = "sample";
-static constexpr const char* text[] = { text0, text1, text2, text3, text4, text5, text6, text7 };
 
 void loop(void)
 {
@@ -92,7 +77,6 @@ void loop(void)
   static unsigned count = 0;
   M5.update();
   
-
   // 前回の描画を消す
   batterySprite.popBackground();
   statusSprite.popBackground();
@@ -130,12 +114,10 @@ void loop(void)
   statusSprite.moveToTopLeft();
   statusSprite.push();
 
-
   // オフスクリーン->LCDへ描画
   console.pushSprite(0,0);
   processTime = loopTimer.Elapsed();
   ++count;
-
 }
 
 void touch_handler(){
@@ -160,9 +142,6 @@ void button_handler(){
   if(M5.BtnA.wasPressed()){
     console.print("A");
     Sound::playNote(Note::C4,100);
-   // Device::viberate(100);
-
-   // M5.Power.setLed(255);
   }
   if(M5.BtnA.wasReleased()){
     console.print("a");
@@ -172,8 +151,8 @@ void button_handler(){
   if(M5.BtnA.wasHold()){
     console.print("(A)");
     Sound::playNote(Note::C6,300);
-      drawRandomPoint(console);
-
+    // debug
+    drawRandomPoint(console);
   }
 
   // ButtonB
@@ -206,7 +185,6 @@ void button_handler(){
     console.print("p\n");
     Sound::playNote(Note::F4,100);
   }
-
 
 }
 
