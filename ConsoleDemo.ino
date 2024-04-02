@@ -7,10 +7,6 @@
 #include "Sprite.hpp"
 #include "TextSprite.hpp"
 
-
-//#include "ConsoleSprite.hpp"
-//#include "BatterySprite.hpp"
-//#include "ConsoleCanvas.hpp"
 // 画像データ
 #include "image_wifi.hpp"
 // 音声データ
@@ -18,19 +14,15 @@
 Sound soundButtonPush(sound_button1);
 
 
-
-
 M5Canvas console(&M5.Display);
-
 TextSprite batterySprite(&console,25,8);
 TextSprite statusSprite(&console,180,8);
 
 Timer startTimer;
 
 
-
 //M5Canvas canvas(&M5.Display);
-// 画面全体にランダムカラーで点を描画
+// 画面全体にランダムカラーで点を描画(debug用)
 void drawRandomPoint(M5Canvas& canvas){
   for(int i = 0; i < 500; ++i){
     int x = random(M5.Display.width());
@@ -43,21 +35,20 @@ void setup() {
   //cfg.external_speaker.hat_spk2 = true;
   M5.begin(cfg);
 
-  // 起動音  
- // Sound::setVolume(255);
   M5.Speaker.begin();
+
+  // 起動音  
   Sound::setVolume(255);
   Sound::beep(2000);
   Sound::beep(1000);
-            //Sound::errorBeep();
 
-
+  
   int size = max(M5.Display.width(),M5.Display.height());
-
   console.setFont(&fonts::lgfxJapanGothic_16);
   console.setColorDepth(8);
   if(console.createSprite(size,size) == NULL){
     M5.Display.fillScreen(TFT_RED);
+    M5.Display.setTextSize(2);
     Serial.println("createSprite error");
     return;
   }
@@ -67,12 +58,6 @@ void setup() {
   console.setTextColor(GREEN);
 
   printDeviceInformation();
-
-
-  drawRandomPoint(console);
-
-
-
 }
 
 

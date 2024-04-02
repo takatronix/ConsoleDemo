@@ -146,24 +146,24 @@ public:
         _y = 0;
     }
     void moveTopCenter(void){
-        _x = (Display.width() - width()) / 2;
+        _x = (M5.Display.width() - width()) / 2;
         _y = 0;
     }
     void moveToBottomLeft(void){
         _x = 0;
-        _y = Display.height() - height();
+        _y = M5.Display.height() - height();
     }
     void moveToBottomRight(void){
-        _x = Display.width() - width();
-        _y = Display.height() - height();
+        _x = M5.Display.width() - width();
+        _y = M5.Display.height() - height();
     }
     void moveToBottomCenter(void){
-        _x = (Display.width() - width()) / 2;
-        _y = Display.height() - height();
+        _x = (M5.Display.width() - width()) / 2;
+        _y = M5.Display.height() - height();
     }
     void moveToCenter(void){
-        _x = (Display.width() - width()) / 2;
-        _y = (Display.height() - height()) / 2;
+        _x = (M5.Display.width() - width()) / 2;
+        _y = (M5.Display.height() - height()) / 2;
     }
 #pragma endregion
 };

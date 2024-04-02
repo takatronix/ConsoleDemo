@@ -13,25 +13,8 @@ public:
     bool drawTextBackground = false;
 
     ConsoleSprite(M5GFX* pDisplay) : Sprite(pDisplay) {
-        // ConsoleSprite 特有の初期化処理をここに追加
-
-        // 
     canvas.setTextScroll(true);
     }
-
-
-/*
-    ConsoleSprite(M5GFX& display,uint32_t textColor=0xffff,uint32_t backgroundColor = 0x0000,int textSize = 1):Sprite(display){
-        this->textColor = textColor;
-        this->backgroundColor = backgroundColor;
-        this->textSize = textSize;
-    }
-    ConsoleSprite(Sprite& sprite,uint32_t textColor=0xffff,uint32_t backgroundColor = 0x0000,int textSize = 1):Sprite(display){
-        this->textColor = textColor;
-        this->backgroundColor = backgroundColor;
-        this->textSize = textSize;
-    }
-*/
 
     ~ConsoleSprite(){
     }
