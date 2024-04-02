@@ -144,26 +144,7 @@ public:
         _x = M5.Display.width() - width();
         _y = 0;
     }
-    void moveTopCenter(void){
-        _x = (M5.Display.width() - width()) / 2;
-        _y = 0;
-    }
-    void moveToBottomLeft(void){
-        _x = 0;
-        _y = M5.Display.height() - height();
-    }
-    void moveToBottomRight(void){
-        _x = M5.Display.width() - width();
-        _y = M5.Display.height() - height();
-    }
-    void moveToBottomCenter(void){
-        _x = (M5.Display.width() - width()) / 2;
-        _y = M5.Display.height() - height();
-    }
-    void moveToCenter(void){
-        _x = (M5.Display.width() - width()) / 2;
-        _y = (M5.Display.height() - height()) / 2;
-    }
+
 #pragma endregion
 };
 #endif

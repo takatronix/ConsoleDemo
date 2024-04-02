@@ -91,7 +91,15 @@ void loop(void)
       console.printf("%s\n",Device::getOrientationName());
       M5.Display.setRotation(rotation);
       // 左下基準に表示
-      consoleY = M5.Display.height() - console.height();
+        consoleY = console.height() - M5.Display.height();
+      if(console.height() > M5.Display.height()){
+        //consoleY *= -1;
+      }
+      console.setTextColor(CYAN);
+      console.printf("display:%dx%d\n",M5.Display.width(),M5.Display.height());
+      console.printf("console:%dx%d\n",console.width(),console.height());
+      console.printf("consoleY:%d\n",consoleY);
+      console.setTextColor(GREEN);
     }
   }
 
